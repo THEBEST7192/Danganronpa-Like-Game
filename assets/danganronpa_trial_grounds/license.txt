@@ -1,0 +1,11 @@
+Model Information:
+* title:	Danganronpa Trial Grounds
+* source:	https://sketchfab.com/3d-models/danganronpa-trial-grounds-510b0711774f408b8e815235014e0c28
+* author:	timedrfreeman (https://sketchfab.com/timedrfreeman)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Danganronpa Trial Grounds" (https://sketchfab.com/3d-models/danganronpa-trial-grounds-510b0711774f408b8e815235014e0c28) by timedrfreeman (https://sketchfab.com/timedrfreeman) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

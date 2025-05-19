@@ -1,0 +1,14 @@
+[
+  {
+	"character": "sindre",
+	"pose": "happy",
+	"idle_pose": "angry",
+	"text": "Hey! Are we really doing this right now?",
+  },
+  {
+	"character": "jasmin",
+	"pose": "angry",
+	"idle_pose": "happy",
+	"text": "You're the last person who should talk.",
+  }
+]
