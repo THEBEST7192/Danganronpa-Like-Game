@@ -16,6 +16,8 @@
 [ext_resource type="PackedScene" uid="uid://d07pd0xtcexss" path="res://assets/school/other/background/worldtradecenter/the_world_trade_center.glb" id="15_ca42v"]
 [ext_resource type="MeshLibrary" uid="uid://cj1klxjq7gtnr" path="res://meshlibary/floor.meshlib" id="15_suyxu"]
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ca42v"]
+
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_luhhm"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
 ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -29,118 +31,6 @@ sky = SubResource("Sky_q2whg")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="GDScript" id="GDScript_ir15t"]
-script/source = "extends Node
-
-const DIALOGUE_PATH: String = \"res://dialogue.json\"
-const CHARACTER_IMAGE_PATH: String = \"res://assets/characters/{0}/{1}.png\"
-const DIALOGUE_UI_SCENE: PackedScene = preload(\"res://ui/DialogueUI.tscn\")
-
-@onready var spawnsets: Node = null # Will be set in switch_act function
-@onready var camera = get_viewport().get_camera_3d()
-
-var dialogue_data: Array = []
-var active_characters: Dictionary = {}
-var dialogue_ui: Control
-var current_text_task = null
-
-func init_ui():
-	dialogue_ui = DIALOGUE_UI_SCENE.instantiate()
-	# Use call_deferred to safely add child during ready phase
-	get_tree().root.add_child.call_deferred(dialogue_ui)
-	dialogue_ui.hide()
-
-func _ready():
-	load_dialogue()
-	init_ui()
-	# Ensure act1 is loaded at startup
-
-
-
-func load_dialogue():
-	var file = FileAccess.open(DIALOGUE_PATH, FileAccess.READ)
-	if not file:
-		push_error(\"Failed to open dialogue file at: \" + DIALOGUE_PATH)
-		return
-
-	var json_result = JSON.parse_string(file.get_as_text())
-	if json_result == null:
-		push_error(\"Invalid JSON in dialogue file\")
-		return
-
-	dialogue_data = json_result
-	print(\"Successfully loaded \", dialogue_data.size(), \" dialogue entries\")
-
-func spawn_characters():
-	# Make sure spawnsets is valid
-	if spawnsets == null:
-		push_error(\"Cannot spawn characters: spawnsets is null\")
-		return
-	print(\"Spawning characters at: \" + str(spawnsets.get_path()))
-	# Track which characters have already been spawned
-	var spawned_characters := {}
-	for entry in dialogue_data:
-		if not entry.has(\"character\"):
-			continue
-		var character = entry[\"character\"]
-		if spawned_characters.has(character):
-			continue
-		spawned_characters[character] = true
-		var spawn_node = spawnsets.get_node_or_null(character)
-		if spawn_node == null:
-			push_error(\"Missing character spawn location: %s/%s\" % [spawnsets.get_path(), character])
-			continue
-		print(\"Spawning character: %s at %s\" % [character, spawn_node.get_path()])
-	
-
-func start_dialogue():
-	print(\"Starting dialogue sequence\")
-	var current_entry_index = 0
-	
-	while current_entry_index < dialogue_data.size():
-		var entry = dialogue_data[current_entry_index]
-		current_entry_index += 1
-		
-		# Handle act transitions
-		if entry.has(\"act\"):
-			print(\"Switching to act: \" + entry[\"act\"])
-
-			# Allow time for act to load
-			await get_tree().process_frame
-			continue
-		
-		# Skip entries without character
-		if not entry.has(\"character\"):
-			continue
-		
-		var character = entry[\"character\"]
-		var text = entry[\"text\"]
-		var pose = entry.get(\"pose\", \"default\")
-		
-		print(\"Processing dialogue for: \" + character)
-		
-		# Update character pose
-		if active_characters.has(character):
-			active_characters[character].call(\"set_pose\", character, pose)
-		else:
-			print(\"Warning: Character '\" + character + \"' not found in active_characters\")
-		
-		
-		# Return to idle pose
-		if active_characters.has(character):
-			active_characters[character].call(\"set_pose\", character, entry.get(\"idle_pose\", \"default\"))
-	
-	print(\"Dialogue sequence completed\")
-
-	
-
-func _exit_tree():
-	if current_text_task != null && current_text_task.is_valid():
-		current_text_task.cancel()
-	if is_instance_valid(dialogue_ui):
-		dialogue_ui.queue_free()
-"
-
 [node name="MainScene" type="Node3D"]
 script = ExtResource("1_ir15t")
 
@@ -148,11 +38,75 @@ script = ExtResource("1_ir15t")
 
 [node name="act1" type="Node3D" parent="spawnsets"]
 
-[node name="sindre" type="Node3D" parent="spawnsets/act1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -3)
+[node name="Makoto" type="Node3D" parent="spawnsets/act1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -1.2375)
 
-[node name="Sprite3D" type="Sprite3D" parent="spawnsets/act1/sindre"]
+[node name="Sprite3D" type="Sprite3D" parent="spawnsets/act1/Makoto"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 1, 0.3, 0)
+
+[node name="InteractionArea" type="Area3D" parent="spawnsets/act1/Makoto"]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="spawnsets/act1/Makoto/InteractionArea"]
+transform = Transform3D(1.75, 0, 0, 0, 1.75, 0, 0, 0, 1.75, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_ca42v")
+
+[node name="Sayaka" type="Node3D" parent="spawnsets/act1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, -6)
+
+[node name="Sprite3D" type="Sprite3D" parent="spawnsets/act1/Sayaka"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 1, 0.3, 0)
+
+[node name="InteractionArea" type="Area3D" parent="spawnsets/act1/Sayaka"]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="spawnsets/act1/Sayaka/InteractionArea"]
+transform = Transform3D(1.75, 0, 0, 0, 1.75, 0, 0, 0, 1.75, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_ca42v")
+
+[node name="Monokuma" type="Node3D" parent="spawnsets/act1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.24711, 2, -6)
+
+[node name="Sprite3D" type="Sprite3D" parent="spawnsets/act1/Monokuma"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 1, 0.3, 0)
+
+[node name="InteractionArea" type="Area3D" parent="spawnsets/act1/Monokuma"]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="spawnsets/act1/Monokuma/InteractionArea"]
+transform = Transform3D(1.75, 0, 0, 0, 1.75, 0, 0, 0, 1.75, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_ca42v")
+
+[node name="Kyoko" type="Node3D" parent="spawnsets/act1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.24711, 2, -4.24113)
+
+[node name="Sprite3D" type="Sprite3D" parent="spawnsets/act1/Kyoko"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 1, 0.3, 0)
+
+[node name="InteractionArea" type="Area3D" parent="spawnsets/act1/Kyoko"]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="spawnsets/act1/Kyoko/InteractionArea"]
+transform = Transform3D(1.75, 0, 0, 0, 1.75, 0, 0, 0, 1.75, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_ca42v")
+
+[node name="Hifumi" type="Node3D" parent="spawnsets/act1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -8)
+
+[node name="Sprite3D" type="Sprite3D" parent="spawnsets/act1/Hifumi"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 1, 0.3, 0)
+
+[node name="InteractionArea" type="Area3D" parent="spawnsets/act1/Hifumi"]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="spawnsets/act1/Hifumi/InteractionArea"]
+transform = Transform3D(1.75, 0, 0, 0, 1.75, 0, 0, 0, 1.75, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_ca42v")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433012, 0, 0, 0)
@@ -392,10 +346,7 @@ transform = Transform3D(0.002, 0, 0, 0, 0.002, 0, 0, 0, 0.002, 90, 1, 1)
 
 [node name="AudioPlayer" type="AudioStreamPlayer3D" parent="."]
 
-[node name="Dialouge Manager" type="Node" parent="."]
-script = SubResource("GDScript_ir15t")
-
-[node name="Control" type="Control" parent="."]
+[node name="DialogueUI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
