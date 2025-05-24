@@ -10,8 +10,8 @@
 		"Hifumi": "relived"
 	  },
 	  "dialogue": [
-		{ "id": "makoto_intro", "character": "Makoto", "text": "Whoa, this place is... unsettling. Is this really Hope's Peak Academy?", "pose": "nervous" },
-		{ "id": "makoto_thought_1", "character": "Player", "text": "He looks lost. Maybe I should check on him.", "type": "dialogue" },
+		{ "id": "makoto_intro", "character": "Makoto", "text": "Whoa, this place is... unsettling. Is this really Hope's Peak Academy?", "pose": "nervous", "next_id": "makoto_thought_1" },
+		{ "id": "makoto_thought_1", "character": "Player", "text": "He looks lost. Maybe I should check on him.", "type": "dialogue", "next_id": "makoto_player_choice" },
 		{ "id": "makoto_player_choice", "character": "Player", "text": "What do you say to Makoto?", "type": "choice",
 		  "options": [
 			{ "text": "Are you okay?", "next_id": "makoto_response_friendly" },
@@ -21,11 +21,11 @@
 		{ "id": "makoto_response_friendly", "character": "Makoto", "text": "Oh, uh, yeah. Just a little overwhelmed. It's a lot to take in.", "pose": "relieved", "next_id": "sayaka_appears" },
 		{ "id": "makoto_response_curt", "character": "Makoto", "text": "Yeah, pretty much. Are you... supposed to be here too?", "pose": "confused", "next_id": "sayaka_appears" },
 
-		{ "id": "sayaka_appears", "character": "Sayaka", "text": "Excuse me, are you two Ultimate students as well?", "pose": "friendly" },
-		{ "id": "sayaka_introduces_self", "character": "Sayaka", "text": "I'm Sayaka Maizono, the Ultimate Pop Sensation!", "pose": "confident" },
-		{ "id": "makoto_reaction_sayaka", "character": "Makoto", "text": "Wow, Sayaka Maizono! It's an honor!", "pose": "starstruck", "next_id": "kyoko_dialogue_start" },
+		{ "id": "sayaka_appears", "character": "Sayaka", "text": "Excuse me, are you two Ultimate students as well?", "pose": "friendly", "next_id": "sayaka_introduces_self" },
+		{ "id": "sayaka_introduces_self", "character": "Sayaka", "text": "I'm Sayaka Maizono, the Ultimate Pop Sensation!", "pose": "confident", "next_id": "makoto_reaction_sayaka" },
+		{ "id": "makoto_reaction_sayaka", "character": "Makoto", "text": "Wow, Sayaka Maizono! It's an honor!", "pose": "starstruck", "next_id": "monokuma_announcement_1" },
 
-		{ "id": "monokuma_announcement_1", "character": "Monokuma", "text": "Puhuhuhu! Ahem, ahem! Attention all students! Your Headmaster Monokuma has an announcement!", "pose": "laughing" },
+		{ "id": "monokuma_announcement_1", "character": "Monokuma", "text": "Puhuhuhu! Ahem, ahem! Attention all students! Your Headmaster Monokuma has an announcement!", "pose": "laughing", "next_id": "monokuma_announcement_2" },
 		{ "id": "monokuma_announcement_2", "character": "Monokuma", "text": "From this moment on, your new home is the academy. And to graduate, you must... kill another student!", "pose": "evil", "trigger_next_act": true }
 	  ]
 	},
@@ -39,7 +39,7 @@
 		"Monokuma": "default"
 	  },
 	  "dialogue": [
-		{ "id": "kyoko_dialogue_start", "character": "Kyoko", "text": "A killing game? This is clearly a trap. We need to investigate.", "pose": "serious" },
+		{ "id": "kyoko_dialogue_start", "character": "Kyoko", "text": "A killing game? This is clearly a trap. We need to investigate.", "pose": "serious", "next_id": "kyoko_player_choice_1" },
 		{ "id": "kyoko_player_choice_1", "character": "Player", "text": "How do you respond to Kyoko?", "type": "choice",
 		  "options": [
 			{ "text": "What should we investigate?", "next_id": "kyoko_advice_1" },
@@ -49,7 +49,7 @@
 		{ "id": "kyoko_advice_1", "character": "Kyoko", "text": "Focus on the evidence. Every detail could be a clue.", "pose": "thinking", "next_id": "hifumi_appears" },
 		{ "id": "kyoko_advice_2", "character": "Kyoko", "text": "Panic won't help. We must remain logical.", "pose": "calm", "next_id": "hifumi_appears" },
 
-		{ "id": "hifumi_appears", "character": "Hifumi", "text": "Whoa, that was intense! Did you guys see that mechanical bear?", "pose": "shocked" },
+		{ "id": "hifumi_appears", "character": "Hifumi", "text": "Whoa, that was intense! Did you guys see that mechanical bear?", "pose": "shocked", "next_id": "hifumi_exit" },
 		{ "id": "hifumi_exit", "character": "Hifumi", "text": "I need to go draw this! For my fanfic!", "pose": "running", "trigger_next_act": true }
 	  ]
 	},
@@ -60,8 +60,8 @@
 		  "Makoto": "determined"
 		},
 		"dialogue": [
-			{ "id": "monokuma_trial_start", "character": "Monokuma", "text": "Puhuhu! Welcome to your first class trial! Let's deduce who the culprit is!", "pose": "laughing" },
-			{ "id": "a_simple_line", "character": "Makoto", "text": "We have to find the truth!", "pose": "determined" },
+			{ "id": "monokuma_trial_start", "character": "Monokuma", "text": "Puhuhu! Welcome to your first class trial! Let's deduce who the culprit is!", "pose": "laughing", "next_id": "a_simple_line" },
+			{ "id": "a_simple_line", "character": "Makoto", "text": "We have to find the truth!", "pose": "determined", "next_id": "trial_end" },
 			{ "id": "trial_end", "character": "Monokuma", "text": "Upupupu! The truth is revealed!", "pose": "evil", "trigger_next_act": true }
 		]
 	}

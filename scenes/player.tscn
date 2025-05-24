@@ -85,7 +85,7 @@ _data = {
 &"walk": SubResource("Animation_i2qha")
 }
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["player"]]
 script = ExtResource("1_iqdwj")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -101,7 +101,7 @@ visible = false
 mesh = ExtResource("2_04cj3")
 
 [node name="InteractionRaycast" type="RayCast3D" parent="Camera3D"]
-transform = Transform3D(10, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0)
+transform = Transform3D(10, 0, 0, 0, -4.37114e-08, 10, 0, -1, -4.37114e-07, 0, -0.5, 0)
 target_position = Vector3(0, 2, 0)
 collision_mask = 2
 collide_with_areas = true
